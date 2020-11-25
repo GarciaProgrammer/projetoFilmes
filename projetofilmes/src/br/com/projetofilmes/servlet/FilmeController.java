@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import br.com.projetofilmes.beans.Filme;
 import br.com.projetofilmes.models.FilmeModel;
 
@@ -53,16 +52,20 @@ public class FilmeController extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String titulo = request.getParameter("titulo");
+		Integer id = 0;
 		int classificacao = Integer.parseInt(request.getParameter("classificacao"));
 		String genero = request.getParameter("genero");
-		Integer id = Integer.parseInt(request.getParameter("id"));
+		if (request.getParameter("id") != null) {
+			id = Integer.parseInt(request.getParameter("id"));
+		}
 		int retorno = 0;
+		
 		Filme filmeSubmit = new Filme();
 		filmeSubmit.setTitulo(titulo);
 		filmeSubmit.setClassificacao(classificacao);
 		filmeSubmit.setGenero(genero);
 
-		if (id != null) {
+		if (id > 0) {
 			filmeSubmit.setId(id);
 			retorno = FilmeModel.UpdateFilme(filmeSubmit);
 		} else {
@@ -72,12 +75,12 @@ public class FilmeController extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		if (retorno > 0) {
 			out.println("<body>");
-			out.println("<b>Filme " + titulo + " Alterada com Sucesso!</b>");
+			out.println("<b>Filme " + titulo + " Criado/Alterado com Sucesso!</b>");
 			out.println("<a href='filme?action=listaFilmes'>Voltar</a>");
 			out.println("</body>");
 		} else {
 			out.println("<body>");
-			out.println("<b>Ocorreu um erro, não foi possível cadastrar um filme!</b>");
+			out.println("<b>Ocorreu um erro, não foi possível alterar/Cadastrar o filme!</b>");
 			out.println("<a href='filme?action=listaFilmes'>Voltar</a>");
 			out.println("</body>");
 		}
@@ -100,6 +103,7 @@ public class FilmeController extends HttpServlet {
 
 		RequestDispatcher rd = request.getRequestDispatcher("cadFilmeAction.jsp");
 		rd.forward(request, response);
+
 	}
 
 	protected void verFilmeAction(HttpServletRequest request, HttpServletResponse response)
