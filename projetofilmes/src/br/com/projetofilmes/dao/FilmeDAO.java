@@ -79,7 +79,7 @@ public class FilmeDAO {
 	}
 	
 	public static int updateFilme(Filme filmeSubmit) {
-		String query = "UPDATE filme SET titulo = ?, classificacao = ? WHERE id = ?";
+		String query = "UPDATE filme SET titulo = ?, classificacao = ?, genero = ? WHERE id = ?";
 		Connection cnn = ConnectionFactory.GetConnection();
 		int linhasAfetadas = 0;
 		
@@ -87,7 +87,8 @@ public class FilmeDAO {
 			PreparedStatement pStmt = cnn.prepareStatement(query);
 			pStmt.setString(1, filmeSubmit.getTitulo());
 			pStmt.setInt(2, filmeSubmit.getClassificacao());
-			pStmt.setLong(3, filmeSubmit.getId());
+			pStmt.setString(3, filmeSubmit.getGenero());
+			pStmt.setLong(4, filmeSubmit.getId());
 			linhasAfetadas = pStmt.executeUpdate();
 			cnn.close();
 		} catch (SQLException e) {
